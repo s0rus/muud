@@ -27,7 +27,7 @@ export function UserButton() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Avatar className="h-24 w-24 cursor-pointer">
+        <Avatar className="h-12 w-12 cursor-pointer border border-primary/20 transition-colors hover:border-primary/30">
           <AvatarImage src={user?.imageUrl} alt={`@${user?.fullName}`} />
           <AvatarFallback>
             {user?.firstName?.slice(0, 2).toUpperCase()}
@@ -48,7 +48,7 @@ export function UserButton() {
                 {user?.fullName ?? "<unknown user>"}
               </span>
               <span className="text-sm font-semibold text-muted-foreground">
-                {user?.emailAddresses[0]?.emailAddress ?? "<unknown user>"}
+                {user?.emailAddresses[0]?.emailAddress ?? "<unknown email>"}
               </span>
             </div>
           </div>
