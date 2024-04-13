@@ -1,4 +1,10 @@
-import { History, Loader2, LogOut, type LucideIcon } from "lucide-react";
+import {
+  History,
+  Loader2,
+  LogOut,
+  type LucideIcon,
+  type LucideProps,
+} from "lucide-react";
 
 export type Icon = LucideIcon;
 
@@ -9,7 +15,7 @@ export const Icon = {
 };
 
 export const MoodIcon = {
-  joy: (props: Icon) => (
+  joy: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={24}
@@ -74,7 +80,7 @@ export const MoodIcon = {
       </g>
     </svg>
   ),
-  sadness: (props: Icon) => (
+  sadness: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={24}
@@ -177,7 +183,7 @@ export const MoodIcon = {
       </g>
     </svg>
   ),
-  fear: (props: Icon) => (
+  fear: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={24}
@@ -237,7 +243,7 @@ export const MoodIcon = {
       </g>
     </svg>
   ),
-  disgust: (props: Icon) => (
+  disgust: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={24}
@@ -297,7 +303,7 @@ export const MoodIcon = {
       </g>
     </svg>
   ),
-  anger: (props: Icon) => (
+  anger: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={24}
@@ -357,6 +363,33 @@ export const MoodIcon = {
           d="M29.5,43c1.2841-0.6376,3.9847-1.0308,6.8421-0.9981c2.6235,0.03,4.9897,0.4146,6.1579,0.9981"
         />
       </g>
+    </svg>
+  ),
+  sadnessMono: (props: LucideProps) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={24}
+      height={24}
+      {...props}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+      />
+      <path
+        d="M8 15s1-1 4-1 4 1 4 1"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        stroke-width="1"
+      />
+      <circle cx="9" cy="10" r="1" fill="currentColor" />
+      <circle cx="15" cy="10" r="1" fill="currentColor" />
     </svg>
   ),
 };

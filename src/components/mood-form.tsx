@@ -67,7 +67,7 @@ export function MoodForm({ addOptimisticMood }: MoodFormProps) {
   return (
     <form action={action} ref={formRef}>
       <div className="space-y-4">
-        <div className="space-y-1">
+        <div className="min-h-7">
           <Label htmlFor="mood">How do you feel?</Label>
           <ToggleGroup
             type="single"
@@ -87,7 +87,7 @@ export function MoodForm({ addOptimisticMood }: MoodFormProps) {
           <input type="hidden" name="mood" defaultValue={currentMood} />
         </div>
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
+          <div className="flex min-h-7 items-end justify-between">
             <Label htmlFor="description">What&apos;s on your mind?</Label>
             <LimitCircle
               value={descriptionLength}
@@ -100,6 +100,7 @@ export function MoodForm({ addOptimisticMood }: MoodFormProps) {
             className="h-48 resize-none"
             aria-describedby="description-error"
             onChange={(e) => setDescriptionLength(e.target.value.length)}
+            maxLength={DESCRIPTION_MAX_LENGTH}
           />
           <p className="text-xs text-muted-foreground">
             Sharing your thoughts is optional.

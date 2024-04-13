@@ -2,6 +2,8 @@
 
 import { type SelectMood } from "@/db/schema";
 import { useOptimistic } from "react";
+import { Empty } from "./board/empty";
+import { Timeline } from "./board/timeline";
 import { MoodForm } from "./mood-form";
 
 export function Mood({ moodList }: { moodList: SelectMood[] }) {
@@ -18,13 +20,11 @@ export function Mood({ moodList }: { moodList: SelectMood[] }) {
         <MoodForm addOptimisticMood={addOptimisticMood} />
       </div>
       <div className="col-span-2">
-        <div className="grid grid-cols-[1fr_1fr_1fr_1fr] gap-4">
-          {optimisticMoodList.map((mood) => (
-            <div key={mood.id} className="bg-muted p-4">
-              {mood.mood}
-            </div>
-          ))}
-        </div>
+        {moodList.length > 0 ? (
+          <Timeline list={optimisticMoodList} />
+        ) : (
+          <Empty />
+        )}
       </div>
     </>
   );
