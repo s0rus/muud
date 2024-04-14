@@ -56,10 +56,11 @@ export function MoodForm({ addOptimisticMood }: MoodFormProps) {
     });
 
     startTransition(async () => {
-      const { message, errors } = await createMoodEntry(parsed.data);
-      if (!errors) {
-        toast.success(message);
+      const response = await createMoodEntry(parsed.data);
+      if (!response?.errors) {
+        toast.success(response?.message);
         formRef.current?.reset();
+        setDescriptionLength(0);
       }
     });
   }

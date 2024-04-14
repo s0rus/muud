@@ -10,7 +10,7 @@ export function Mood({ moodList }: { moodList: SelectMood[] }) {
   const [optimisticMoodList, addOptimisticMood] = useOptimistic(
     moodList,
     (state, newMood: SelectMood) => {
-      return [...state, newMood];
+      return [newMood, ...state];
     },
   );
 

@@ -6,7 +6,7 @@ import { UnauthorizedUser } from "@/components/unauthorized-user";
 import { db } from "@/db/db";
 import { moods } from "@/db/schema";
 import { currentUser } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 
 export default async function Home() {
   const user = await currentUser();
@@ -18,7 +18,8 @@ export default async function Home() {
   const moodList = await db
     .select()
     .from(moods)
-    .where(eq(moods.moodOwnerId, user.id));
+    .where(eq(moods.moodOwnerId, user.id))
+    .orderBy(desc(moods.createdAt));
 
   return (
     <main className="container flex min-h-screen flex-col">
