@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateMoodSchema } from "@/db/schema";
+import { CreateMoodSchema } from "@/server/db/schema";
 import { MoodIcon, type Icon } from "./ui/icon";
 import { ToggleGroupItem } from "./ui/toggle-group";
 

@@ -1,9 +1,10 @@
 "use server";
 
-import { db } from "@/db/db";
-import { CreateMoodSchema, moods } from "@/db/schema";
+import { db } from "@/server/db/db";
+import { CreateMoodSchema, moods } from "@/server/db/schema";
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
+import "server-only";
 
 export type State = {
   errors?: Record<string, string[]>;
@@ -24,6 +25,12 @@ export async function createMoodEntry(data: unknown): Promise<State> {
   const { mood, description = "" } = parsed.data;
   const { userId } = auth();
 
+  if (!userId) {
+    return {
+      message: "Unauthorized",
+    };
+  }
+
   try {
     await db.insert(moods).values({
       mood,
@@ -41,5 +48,32 @@ export async function createMoodEntry(data: unknown): Promise<State> {
     };
   } finally {
     revalidatePath("/");
+  }
+}
+
+export async function getMoodEntries({
+  offset,
+  limit,
+}: {
+  offset?: number;
+  limit?: number;
+}) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const moodList = await db.query.moods.findMany({
+      offset,
+      limit,
+      where: (fields, { eq }) => eq(fields.moodOwnerId, userId),
+      orderBy: (fields, { desc }) => desc(fields.createdAt),
+    });
+
+    return moodList;
+  } catch (error) {
+    throw new Error("Database Error: Failed to get mood entries.");
   }
 }

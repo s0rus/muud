@@ -1,17 +1,32 @@
-import { type SelectMood } from "@/db/schema";
+import { type SelectMood } from "@/server/db/schema";
+import { getMoodEntries } from "@/server/queries";
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
+import { useTransition } from "react";
 
 type TimelineProps = {
-  list: SelectMood[];
+  entries: SelectMood[];
+  addEntry: (entryData: SelectMood[]) => void;
 };
 
-export function Timeline({ list }: TimelineProps) {
+export function Timeline({ entries, addEntry }: TimelineProps) {
+  const [pending, startTransition] = useTransition();
+  function loadMoreEntries() {
+    startTransition(async () => {
+      const moreEntries = await getMoodEntries({
+        offset: entries.length,
+        limit: 10,
+      });
+
+      addEntry([...entries, ...moreEntries]);
+    });
+  }
+
   return (
     <motion.ul className="flex w-full flex-col">
-      {list.map((mood, idx, arr) => (
+      {entries.map((entry, idx, arr) => (
         <motion.li
-          key={`${mood.description}__${mood.createdAt.toString()}__${mood.mood}`}
+          key={`${entry.description}__${entry.createdAt.toString()}__${entry.mood}`}
           className="flex h-full flex-row gap-4"
           layout
         >
@@ -24,7 +39,7 @@ export function Timeline({ list }: TimelineProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 + 0.3 }}
               >
-                {dayjs(mood.createdAt).format("DD/MM/YYYY")}
+                {dayjs(entry.createdAt).format("DD/MM/YYYY")}
               </motion.span>
               <motion.span
                 id="dot"
@@ -42,9 +57,6 @@ export function Timeline({ list }: TimelineProps) {
               <motion.span
                 id="line"
                 className="mr-[7px] block h-full w-0.5 flex-1 bg-secondary"
-                // initial={{ opacity: 0, height: 0 }}
-                // animate={{ opacity: 1, height: "100%" }}
-                // transition={{ delay: idx * 0.2 + 0.3 }}
                 initial={{ scaleY: 0, originY: 0 }}
                 animate={{ scaleY: 1, originY: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.1 + 0.4 }}
@@ -62,10 +74,15 @@ export function Timeline({ list }: TimelineProps) {
               ease: "easeInOut",
             }}
           >
-            {mood.description}
+            {entry.description}
           </motion.div>
         </motion.li>
       ))}
+      <form action={loadMoreEntries}>
+        <button type="submit" disabled={pending}>
+          {pending ? "Loading.." : "Load more"}
+        </button>
+      </form>
     </motion.ul>
   );
 }

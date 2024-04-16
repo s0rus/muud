@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
+import { Header } from "./_components/header";
 
 export const metadata: Metadata = {
   title: "MUUD",
@@ -31,7 +32,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <main className="container flex min-h-screen flex-col">
+              <Header />
+              {children}
+            </main>
             <Toaster />
           </ThemeProvider>
         </body>

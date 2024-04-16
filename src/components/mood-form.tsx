@@ -1,9 +1,9 @@
-import { createMoodEntry } from "@/app/actions/mood";
 import {
   CreateMoodSchema,
   DESCRIPTION_MAX_LENGTH,
   type SelectMood,
-} from "@/db/schema";
+} from "@/server/db/schema";
+import { createMoodEntry } from "@/server/queries";
 import { useAuth } from "@clerk/nextjs";
 import { useId, useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -16,10 +16,10 @@ import { Textarea } from "./ui/textarea";
 import { ToggleGroup } from "./ui/toggle-group";
 
 type MoodFormProps = {
-  addOptimisticMood: (mood: SelectMood) => void;
+  addEntry: (entryData: SelectMood) => void;
 };
 
-export function MoodForm({ addOptimisticMood }: MoodFormProps) {
+export function MoodForm({ addEntry }: MoodFormProps) {
   const id = useId();
   const { userId } = useAuth();
   const formRef = useRef<HTMLFormElement>(null);
@@ -47,15 +47,15 @@ export function MoodForm({ addOptimisticMood }: MoodFormProps) {
     }
 
     setErrors(null);
-    addOptimisticMood({
-      id,
-      mood: parsed.data.mood,
-      description: parsed.data.description ?? "",
-      moodOwnerId: userId,
-      createdAt: new Date(),
-    });
-
     startTransition(async () => {
+      addEntry({
+        id,
+        mood: parsed.data.mood,
+        description: parsed.data.description ?? "",
+        moodOwnerId: userId,
+        createdAt: new Date(),
+      });
+
       const response = await createMoodEntry(parsed.data);
       if (!response?.errors) {
         toast.success(response?.message);
