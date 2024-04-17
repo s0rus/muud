@@ -379,14 +379,14 @@ export const MoodIcon = {
         r="10"
         fill="none"
         stroke="currentColor"
-        stroke-width="1"
+        strokeWidth="1"
       />
       <path
         d="M8 15s1-1 4-1 4 1 4 1"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-width="1"
+        strokeWidth="1"
       />
       <circle cx="9" cy="10" r="1" fill="currentColor" />
       <circle cx="15" cy="10" r="1" fill="currentColor" />

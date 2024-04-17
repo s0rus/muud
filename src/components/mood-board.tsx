@@ -1,9 +1,10 @@
 "use client";
 
 import { type SelectMood } from "@/server/db/schema";
-import { useOptimistic, useState } from "react";
+import { useOptimistic } from "react";
 import { Empty } from "./board/empty";
 import { Timeline } from "./board/timeline";
+import { LoadMore } from "./load-more";
 import { MoodForm } from "./mood-form";
 
 export function MoodBoard({
@@ -11,9 +12,8 @@ export function MoodBoard({
 }: {
   initialMoodEntries: SelectMood[];
 }) {
-  const [entires, setEntries] = useState<SelectMood[]>(initialMoodEntries);
-  const [entryList, addEntry] = useOptimistic(
-    entires,
+  const [optimisticEntryList, addOptimisticEntry] = useOptimistic(
+    initialMoodEntries,
     (state, newEntry: SelectMood) => {
       return [newEntry, ...state];
     },
@@ -22,11 +22,14 @@ export function MoodBoard({
   return (
     <>
       <div className="col-span-1">
-        <MoodForm addEntry={addEntry} />
+        <MoodForm addOptimisticEntry={addOptimisticEntry} />
       </div>
       <div className="col-span-2">
-        {entryList.length > 0 ? (
-          <Timeline entries={entryList} addEntry={setEntries} />
+        {optimisticEntryList.length > 0 ? (
+          <>
+            <Timeline entries={optimisticEntryList} />
+            <LoadMore />
+          </>
         ) : (
           <Empty />
         )}

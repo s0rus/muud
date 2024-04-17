@@ -6,7 +6,7 @@ import { getMoodEntries } from "@/server/queries";
 export default async function Home() {
   const initialMoodEntries = await getMoodEntries({
     offset: 0,
-    limit: 10,
+    limit: 20,
   });
 
   return (
@@ -21,7 +21,7 @@ export default async function Home() {
           </div>
         </div>
       </nav>
-      <MoodBoard initialMoodEntries={initialMoodEntries} />
+      <MoodBoard initialMoodEntries={initialMoodEntries.data} />
     </div>
   );
 }

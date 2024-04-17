@@ -16,10 +16,10 @@ import { Textarea } from "./ui/textarea";
 import { ToggleGroup } from "./ui/toggle-group";
 
 type MoodFormProps = {
-  addEntry: (entryData: SelectMood) => void;
+  addOptimisticEntry: (entryData: SelectMood) => void;
 };
 
-export function MoodForm({ addEntry }: MoodFormProps) {
+export function MoodForm({ addOptimisticEntry }: MoodFormProps) {
   const id = useId();
   const { userId } = useAuth();
   const formRef = useRef<HTMLFormElement>(null);
@@ -48,7 +48,7 @@ export function MoodForm({ addEntry }: MoodFormProps) {
 
     setErrors(null);
     startTransition(async () => {
-      addEntry({
+      addOptimisticEntry({
         id,
         mood: parsed.data.mood,
         description: parsed.data.description ?? "",

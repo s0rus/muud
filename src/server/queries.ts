@@ -2,7 +2,7 @@
 
 import { db } from "@/server/db/db";
 import { CreateMoodSchema, moods } from "@/server/db/schema";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import "server-only";
 
@@ -72,7 +72,11 @@ export async function getMoodEntries({
       orderBy: (fields, { desc }) => desc(fields.createdAt),
     });
 
-    return moodList;
+    if (!moodList.length) {
+      return { data: [], isAllDataLoaded: true };
+    }
+
+    return { data: moodList, isAllDataLoaded: false };
   } catch (error) {
     throw new Error("Database Error: Failed to get mood entries.");
   }
