@@ -13,7 +13,7 @@ export function UnauthorizedUser() {
           <span className="font-bold">thoughts</span> today!
         </h1>
         <SignInButton mode="modal">
-          <Button>Sign in</Button>
+          <Button className="w-fit">Sign in</Button>
         </SignInButton>
       </div>
     </main>

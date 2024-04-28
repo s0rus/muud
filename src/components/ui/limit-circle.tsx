@@ -28,6 +28,7 @@ export function LimitCircle({
       animate={value > 0 ? "visible" : "hidden"}
       variants={variants}
       transition={{ duration: 0.2 }}
+      initial="hidden"
     >
       <svg width="24" height="24">
         <circle

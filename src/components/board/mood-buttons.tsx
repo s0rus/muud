@@ -1,8 +1,8 @@
 "use client";
 
 import { CreateMoodSchema } from "@/server/db/schema";
-import { MoodIcon, type Icon } from "./ui/icon";
-import { ToggleGroupItem } from "./ui/toggle-group";
+import { MoodIcon, type Icon } from "../ui/icon";
+import { ToggleGroupItem } from "../ui/toggle-group";
 
 export function MoodButtons() {
   return Object.keys(CreateMoodSchema.shape.mood.enum).map((mood, idx) => {

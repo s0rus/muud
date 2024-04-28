@@ -1,26 +1,19 @@
-import {
-  CreateMoodSchema,
-  DESCRIPTION_MAX_LENGTH,
-  type SelectMood,
-} from "@/server/db/schema";
+"use client";
+
+import { CreateMoodSchema, DESCRIPTION_MAX_LENGTH } from "@/server/db/schema";
 import { createMoodEntry } from "@/server/queries";
 import { useAuth } from "@clerk/nextjs";
-import { useId, useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Icon } from "../ui/icon";
+import { Label } from "../ui/label";
+import { LimitCircle } from "../ui/limit-circle";
+import { Textarea } from "../ui/textarea";
+import { ToggleGroup } from "../ui/toggle-group";
 import { MoodButtons } from "./mood-buttons";
-import { Button } from "./ui/button";
-import { Icon } from "./ui/icon";
-import { Label } from "./ui/label";
-import { LimitCircle } from "./ui/limit-circle";
-import { Textarea } from "./ui/textarea";
-import { ToggleGroup } from "./ui/toggle-group";
 
-type MoodFormProps = {
-  addOptimisticEntry: (entryData: SelectMood) => void;
-};
-
-export function MoodForm({ addOptimisticEntry }: MoodFormProps) {
-  const id = useId();
+export function MoodForm() {
   const { userId } = useAuth();
   const formRef = useRef<HTMLFormElement>(null);
   const [currentMood, setCurrentMood] = useState<string | undefined>(undefined);
@@ -48,14 +41,6 @@ export function MoodForm({ addOptimisticEntry }: MoodFormProps) {
 
     setErrors(null);
     startTransition(async () => {
-      addOptimisticEntry({
-        id,
-        mood: parsed.data.mood,
-        description: parsed.data.description ?? "",
-        moodOwnerId: userId,
-        createdAt: new Date(),
-      });
-
       const response = await createMoodEntry(parsed.data);
       if (!response?.errors) {
         toast.success(response?.message);
@@ -106,7 +91,6 @@ export function MoodForm({ addOptimisticEntry }: MoodFormProps) {
           <p className="text-xs text-muted-foreground">
             Sharing your thoughts is optional.
           </p>
-
           <div id="description-error" aria-live="polite">
             {errors?.description?.map((error: string) => (
               <p className="text-sm font-semibold text-destructive" key={error}>

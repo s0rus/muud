@@ -1,7 +1,9 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import { ReactQueryProvider } from "@/components/providers/react-query-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import "@/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
@@ -18,7 +20,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+        elements: {
+          modalBackdrop: {
+            display: "flex",
+            alignItems: "center",
+          },
+        },
+      }}
+    >
       <html
         lang="en"
         className={`${GeistSans.variable} ${GeistMono.variable}`}
@@ -26,18 +38,20 @@ export default function RootLayout({
       >
         <head />
         <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main className="container flex min-h-screen flex-col">
-              <Header />
-              {children}
-            </main>
-            <Toaster />
-          </ThemeProvider>
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <main className="container flex min-h-screen flex-col">
+                <Header />
+                {children}
+              </main>
+              <Toaster />
+            </ThemeProvider>
+          </ReactQueryProvider>
         </body>
       </html>
     </ClerkProvider>

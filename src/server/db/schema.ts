@@ -4,6 +4,7 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
+export const INITIAL_MOOD_ENTRY_OFFSET = 20;
 export const DESCRIPTION_MAX_LENGTH = 256;
 
 export const moods = sqliteTable("moods", {

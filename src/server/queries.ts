@@ -51,13 +51,7 @@ export async function createMoodEntry(data: unknown): Promise<State> {
   }
 }
 
-export async function getMoodEntries({
-  offset,
-  limit,
-}: {
-  offset?: number;
-  limit?: number;
-}) {
+export async function getMoodEntries({ cursor }: { cursor: number }) {
   const { userId } = auth();
 
   if (!userId) {
@@ -66,8 +60,8 @@ export async function getMoodEntries({
 
   try {
     const moodList = await db.query.moods.findMany({
-      offset,
-      limit,
+      offset: cursor,
+      limit: 10,
       where: (fields, { eq }) => eq(fields.moodOwnerId, userId),
       orderBy: (fields, { desc }) => desc(fields.createdAt),
     });
@@ -76,7 +70,7 @@ export async function getMoodEntries({
       return { data: [], isAllDataLoaded: true };
     }
 
-    return { data: moodList, isAllDataLoaded: false };
+    return { data: moodList, nextCursor: cursor + 10 + 1 };
   } catch (error) {
     throw new Error("Database Error: Failed to get mood entries.");
   }
